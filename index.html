@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Volume</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .container > * {
+        margin: 5px;
+    }
+
+    input[type="number"] {
+        width: 180px;
+    }
+
+    #addButton {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    #itemTable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #itemTable th, #itemTable td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    #itemTable th {
+        background-color: #f2f2f2;
+    }
+
+    #totalVolume {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <input type="number" id="length" placeholder="Comprimento">
+    <input type="number" id="width" placeholder="Largura">
+    <input type="number" id="thickness" placeholder="Espessura">
+    <button id="addButton" onclick="addItem()">Adicionar</button>
+</div>
+
+<table id="itemTable">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Comprimento (m)</th>
+            <th>Largura (m)</th>
+            <th>Espessura (m)</th>
+            <th>Metro Cúbico (m³)</th>
+        </tr>
+    </thead>
+    <tbody id="itemList">
+    </tbody>
+</table>
+
+<div id="totalVolume"></div>
+
+<script>
+    function addItem() {
+        var length = parseFloat(document.getElementById("length").value);
+        var width = parseFloat(document.getElementById("width").value);
+        var thickness = parseFloat(document.getElementById("thickness").value);
+        
+        if (!isNaN(length) && !isNaN(width) && !isNaN(thickness)) {
+            var volume = length * width * thickness;
+            var table = document.getElementById("itemList");
+            var newRow = table.insertRow(-1);
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+            cell1.innerHTML = table.rows.length - 1;
+            cell2.innerHTML = length.toFixed(3);
+            cell3.innerHTML = width.toFixed(3);
+            cell4.innerHTML = thickness.toFixed(3);
+            cell5.innerHTML = volume.toFixed(3);
+
+            document.getElementById("length").value = "";
+            document.getElementById("width").value = "";
+            document.getElementById("thickness").value = "";
+
+            updateTotalVolume();
+        } else {
+            alert("Por favor, preencha todos os campos com valores numéricos.");
+        }
+    }
+
+    function updateTotalVolume() {
+        var totalVolume = 0;
+        var table = document.getElementById("itemList");
+        for (var i = 0; i < table.rows.length; i++) {
+            totalVolume += parseFloat(table.rows[i].cells[4].innerHTML);
+        }
+        document.getElementById("totalVolume").innerHTML = "Total Volume: " + totalVolume.toFixed(3) + " m³";
+    }
+</script>
+
+</body>
+</html>
